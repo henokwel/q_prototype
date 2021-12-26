@@ -7,17 +7,34 @@ import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   const [qArr, setQArr] = useState([
-    { q: "A", alt_A: false, alt_B: false, alt_C: false },
+    {
+      q: "A",
+      alt_A: false,
+      alt_B: false,
+      alt_C: false,
+      altA_q: "",
+      altB_q: "",
+      altC_q: "",
+    },
   ]);
 
   const handleAddFields = () => {
     const values = [...qArr];
 
-
     // check if the prev has a Q and >=1 answer
     // else display error In Q or Answers
 
-    values.push({ q: "", alt_A: false, alt_B: false, alt_C: false });
+    
+
+    values.push({
+      q: "",
+      alt_A: false,
+      alt_B: false,
+      alt_C: false,
+      altA_q: "",
+      altB_q: "",
+      altC_q: "",
+    });
     setQArr(values);
   };
 
@@ -44,8 +61,13 @@ const Home: NextPage = () => {
     if (target.name === "q_" && target.value.trim() !== "") {
       console.log(target.name);
 
- 
       values[index].q = target.value;
+    } else if (target.name === "altA_q" && target.value.trim() !== "") {
+      values[index].altA_q = target.value;
+    } else if (target.name === "altB_q" && target.value.trim() !== "") {
+      values[index].altB_q = target.value;
+    } else if (target.name === "altC_q" && target.value.trim() !== "") {
+      values[index].altC_q = target.value;
     } else if (target.name === "altA") {
       values[index].alt_A = !values[index].alt_A;
     } else if (target.name === "altB") {
@@ -102,6 +124,14 @@ const Home: NextPage = () => {
                         checked={q.alt_A}
                         onChange={(event) => handleInputChange(index, event)}
                       />
+                      <input
+                        type="text"
+                        // className="form-control"
+                        id="altA_q"
+                        name="altA_q"
+                        value={q.altA_q}
+                        onChange={(event) => handleInputChange(index, event)}
+                      />
                     </div>
 
                     <div>
@@ -115,6 +145,14 @@ const Home: NextPage = () => {
                         checked={q.alt_B}
                         onChange={(event) => handleInputChange(index, event)}
                       />
+                        <input
+                        type="text"
+                        // className="form-control"
+                        id="altB_q"
+                        name="altB_q"
+                        value={q.altB_q}
+                        onChange={(event) => handleInputChange(index, event)}
+                      />
                     </div>
 
                     <div>
@@ -126,6 +164,14 @@ const Home: NextPage = () => {
                         name="altC"
                         // value={q.q}
                         checked={q.alt_C}
+                        onChange={(event) => handleInputChange(index, event)}
+                      />
+                        <input
+                        type="text"
+                        // className="form-control"
+                        id="altC_q"
+                        name="altC_q"
+                        value={q.altC_q}
                         onChange={(event) => handleInputChange(index, event)}
                       />
                     </div>
