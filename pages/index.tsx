@@ -20,11 +20,18 @@ const Home: NextPage = () => {
 
   const handleAddFields = () => {
     const values = [...qArr];
+    console.log("RUn");
 
     // check if the prev has a Q and >=1 answer
     // else display error In Q or Answers
 
-    
+    // start with finding the last Q in the array
+
+    let lastQ =
+      values[values.length - 1] === undefined
+        ? values[0]
+        : values[values.length - 1];
+    console.log(lastQ);
 
     values.push({
       q: "",
@@ -54,19 +61,17 @@ const Home: NextPage = () => {
       value: any;
     };
 
-    console.log(target);
-
     // change to Switch
 
-    if (target.name === "q_" && target.value.trim() !== "") {
+    if (target.name === "q_" && target.value !== " ") {
       console.log(target.name);
 
       values[index].q = target.value;
-    } else if (target.name === "altA_q" && target.value.trim() !== "") {
+    } else if (target.name === "altA_q" && target.value !== " ") {
       values[index].altA_q = target.value;
-    } else if (target.name === "altB_q" && target.value.trim() !== "") {
+    } else if (target.name === "altB_q" && target.value !== " ") {
       values[index].altB_q = target.value;
-    } else if (target.name === "altC_q" && target.value.trim() !== "") {
+    } else if (target.name === "altC_q" && target.value !== " ") {
       values[index].altC_q = target.value;
     } else if (target.name === "altA") {
       values[index].alt_A = !values[index].alt_A;
@@ -80,7 +85,7 @@ const Home: NextPage = () => {
     console.log(qArr);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log("qArr", qArr);
   };
@@ -145,7 +150,7 @@ const Home: NextPage = () => {
                         checked={q.alt_B}
                         onChange={(event) => handleInputChange(index, event)}
                       />
-                        <input
+                      <input
                         type="text"
                         // className="form-control"
                         id="altB_q"
@@ -166,7 +171,7 @@ const Home: NextPage = () => {
                         checked={q.alt_C}
                         onChange={(event) => handleInputChange(index, event)}
                       />
-                        <input
+                      <input
                         type="text"
                         // className="form-control"
                         id="altC_q"
@@ -183,10 +188,9 @@ const Home: NextPage = () => {
 
           <br />
           <br />
-
-          <button onClick={handleAddFields}>Add More</button>
-          <button>Finish Quiz</button>
         </form>
+        <button onClick={() => handleAddFields()}>Add More</button>
+        <button>Finish Quiz</button>
       </main>
     </div>
   );
