@@ -24,6 +24,7 @@ const Home: NextPage = () => {
 
     // check if the prev has a Q and >=1 answer
     // else display error In Q or Answers
+    // Trim() before save and create a new Q
 
     // start with finding the last Q in the array
 
@@ -31,18 +32,35 @@ const Home: NextPage = () => {
       values[values.length - 1] === undefined
         ? values[0]
         : values[values.length - 1];
+
     console.log(lastQ);
 
-    values.push({
-      q: "",
-      alt_A: false,
-      alt_B: false,
-      alt_C: false,
-      altA_q: "",
-      altB_q: "",
-      altC_q: "",
-    });
-    setQArr(values);
+    // check for Q
+
+    if(lastQ.q !== ""){
+
+      console.log("Q here");
+      
+      if(lastQ.alt_A || lastQ.alt_B || lastQ.alt_C){
+        console.log("Everything is DONE");
+        
+        
+            values.push({
+              q: "",
+              alt_A: false,
+              alt_B: false,
+              alt_C: false,
+              altA_q: "",
+              altB_q: "",
+              altC_q: "",
+            });
+
+            setQArr(values);
+        
+      }
+      
+    }
+    
   };
 
   const handleRemoveFields = (index: number) => {
@@ -82,13 +100,11 @@ const Home: NextPage = () => {
     }
 
     setQArr(values);
-    console.log(qArr);
-  };
+   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log("qArr", qArr);
-  };
+   };
 
   return (
     <div className={styles.container}>
