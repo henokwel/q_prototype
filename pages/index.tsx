@@ -35,34 +35,34 @@ const Home: NextPage = () => {
 
     console.log(lastQ);
 
-    // check for Q
+    // check for Q and Answers are not empty
 
-    if(lastQ.q !== ""){
-
+    if (
+      lastQ.q !== "" &&
+      lastQ.altA_q !== "" &&
+      lastQ.altB_q !== "" &&
+      lastQ.altC_q !== ""
+    ) {
       console.log("Q here");
-      
-      if(lastQ.alt_A || lastQ.alt_B || lastQ.alt_C){
-        console.log("Everything is DONE");
-        
-        
-            values.push({
-              q: "",
-              alt_A: false,
-              alt_B: false,
-              alt_C: false,
-              altA_q: "",
-              altB_q: "",
-              altC_q: "",
-            });
 
-            setQArr(values);
-        
+      // check for  >=1 Answers are selected
+
+      if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
+        values.push({
+          q: "",
+          alt_A: false,
+          alt_B: false,
+          alt_C: false,
+          altA_q: "",
+          altB_q: "",
+          altC_q: "",
+        });
+        setQArr(values);
       }
-      
     }
-    
   };
 
+  
   const handleRemoveFields = (index: number) => {
     const values = [...qArr];
     values.splice(index, 1);
@@ -100,11 +100,11 @@ const Home: NextPage = () => {
     }
 
     setQArr(values);
-   };
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-   };
+  };
 
   return (
     <div className={styles.container}>
