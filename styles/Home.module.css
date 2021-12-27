@@ -12,6 +12,12 @@
   align-items: center;
 }
 
+ 
+
+.inputCheck{
+  border: 1px solid red;
+  background-color: red;
+}
 .footer {
   display: flex;
   flex: 1;
