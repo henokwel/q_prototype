@@ -1,4 +1,3 @@
-import { error, trace } from "console";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -6,13 +5,8 @@ import React, { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
 const uniqid = require("uniqid");
 
-
-
-
-// Share Q 
+// Share Q
 // Admin/quizzName/random generate Id for the q / .domain
-
-
 
 const Home: NextPage = () => {
   const [qArr, setQArr] = useState([
@@ -38,21 +32,15 @@ const Home: NextPage = () => {
   const handleAddFields = () => {
     const values = [...qArr];
 
-    // Add workingOnCurrently to make sure user don't go back and changeSometing! 
+    // Add workingOnCurrently to make sure user don't go back and changeSometing!
     // With better UI you can toggle between Q and make sure to check that everything is Filled!
-
 
     // A better way to handle nested Logic
     // => https://www.freecodecamp.org/news/so-youre-in-if-else-hell-here-s-how-to-get-out-of-it-fc6407fec0e/
 
-
-
-    
     // check if the prev has a Q and >=1 answer
     // else display error In Q or Answers
     // Trim() before save and create a new Q
-
-
 
     // start with finding the last Q in the array
 
