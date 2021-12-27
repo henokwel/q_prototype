@@ -1,13 +1,15 @@
-import { trace } from "console";
+import { error, trace } from "console";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
+const uniqid = require("uniqid");
 
 const Home: NextPage = () => {
   const [qArr, setQArr] = useState([
     {
+      id: uniqid(),
       q: "A",
       alt_A: false,
       alt_B: false,
@@ -18,9 +20,15 @@ const Home: NextPage = () => {
     },
   ]);
 
+  const [inputError, setInputError] = useState({
+    id: null,
+    q: false,
+    alt: false,
+    answer: false,
+  });
+
   const handleAddFields = () => {
     const values = [...qArr];
-    console.log("RUn");
 
     // check if the prev has a Q and >=1 answer
     // else display error In Q or Answers
@@ -33,22 +41,72 @@ const Home: NextPage = () => {
         ? values[0]
         : values[values.length - 1];
 
-    console.log(lastQ);
-
     // check for Q and Answers are not empty
 
-    if (
-      lastQ.q !== "" &&
-      lastQ.altA_q !== "" &&
-      lastQ.altB_q !== "" &&
-      lastQ.altC_q !== ""
-    ) {
-      console.log("Q here");
+    // console.error("No Q give");
+    // =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // if (
+    //   lastQ.q !== "" &&
+    //   lastQ.altA_q !== "" &&
+    //   lastQ.altB_q !== "" &&
+    //   lastQ.altC_q !== ""
+    // ) {
+    //   console.log("Q here");
 
-      // check for  >=1 Answers are selected
+    // setInputError({ id: lastQ.id, q: });
+    // check for  >=1 Answers are selected
+
+    // if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
+    //   values.push({
+    //     id: uniqid(),
+    //     q: "",
+    //     alt_A: false,
+    //     alt_B: false,
+    //     alt_C: false,
+    //     altA_q: "",
+    //     altB_q: "",
+    //     altC_q: "",
+    //   });
+    //   setQArr(values);
+    // }
+
+    // console.error("No Alt give");
+    // }
+    // =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    // Q Check
+    if (lastQ.q === "") {
+      console.error("No Q give");
+
+      // setInputError({ id: lastQ.id, q: });
+
+      // check for  alternative, all must be given
+    } else if (!lastQ.altA_q || !lastQ.altB_q || !lastQ.altC_q) {
+      console.error("NO Alts given");
+      // console.log("Error ALt");
+    }
+    // else if (lastQ.altA_q === "") {
+    //   console.error("NO Alts given");
+    //   console.log("Error ALt");
+    //   return;
+    // } else if (lastQ.altB_q === "") {
+    //   console.error("NO Alts given");
+    //   console.log("Error ALt");
+    //   return;
+    // } else if (lastQ.altC_q === "") {
+    //   console.error("NO Alts given");
+    //   console.log("Error ALt");
+    //   return;
+    // }
+    else if (!lastQ.alt_A && !lastQ.alt_B && !lastQ.alt_C) {
+      console.error("NO Answer given");
+      // console.log("Error ALt");
+    } else {
+      console.log("Last Else");
 
       if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
         values.push({
+          id: uniqid(),
           q: "",
           alt_A: false,
           alt_B: false,
@@ -62,7 +120,6 @@ const Home: NextPage = () => {
     }
   };
 
-  
   const handleRemoveFields = (index: number) => {
     const values = [...qArr];
     values.splice(index, 1);
