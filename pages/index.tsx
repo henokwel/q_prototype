@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
 const uniqid = require("uniqid");
@@ -29,6 +31,10 @@ const Home: NextPage = () => {
     answer: false,
   });
 
+  const [current, setCurrent] = useState(null);
+
+  const router = useRouter();
+
   const handleAddFields = () => {
     const values = [...qArr];
 
@@ -49,50 +55,68 @@ const Home: NextPage = () => {
         ? values[0]
         : values[values.length - 1];
 
+    setCurrent(lastQ.id);
     // check for Q and Answers are not empty
 
-    // console.error("No Q give");
-    // =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    // if (
+    {
+      /*
+      // console.error("No Q give");
+      // =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      // if (
     //   lastQ.q !== "" &&
     //   lastQ.altA_q !== "" &&
     //   lastQ.altB_q !== "" &&
     //   lastQ.altC_q !== ""
     // ) {
-    //   console.log("Q here");
-
-    // setInputError({ id: lastQ.id, q: });
-    // check for  >=1 Answers are selected
-
-    // if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
-    //   values.push({
-    //     id: uniqid(),
-    //     q: "",
-    //     alt_A: false,
-    //     alt_B: false,
-    //     alt_C: false,
-    //     altA_q: "",
-    //     altB_q: "",
-    //     altC_q: "",
-    //   });
-    //   setQArr(values);
-    // }
-
-    // console.error("No Alt give");
-    // }
+      //   console.log("Q here");
+      
+      // setInputError({ id: lastQ.id, q: });
+      // check for  >=1 Answers are selected
+      
+      // if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
+        //   values.push({
+          //     id: uniqid(),
+          //     q: "",
+          //     alt_A: false,
+          //     alt_B: false,
+          //     alt_C: false,
+          //     altA_q: "",
+          //     altB_q: "",
+          //     altC_q: "",
+          //   });
+          //   setQArr(values);
+          // }
+          
+          // console.error("No Alt give");
+          // }
+        */
+    }
     // =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     // Q Check
     if (lastQ.q === "") {
       console.error("No Q give");
+      setInputError({
+        id: lastQ.id,
+        q: true,
+        alt: false,
+        answer: false,
+      });
 
       // setInputError({ id: lastQ.id, q: });
 
       // check for  alternative, all must be given
     } else if (!lastQ.altA_q || !lastQ.altB_q || !lastQ.altC_q) {
+      setInputError({
+        id: lastQ.id,
+        q: false,
+        alt: true,
+        answer: false,
+      });
       console.error("NO Alts given");
       // console.log("Error ALt");
     }
+
     // else if (lastQ.altA_q === "") {
     //   console.error("NO Alts given");
     //   console.log("Error ALt");
@@ -108,25 +132,54 @@ const Home: NextPage = () => {
     // }
     else if (!lastQ.alt_A && !lastQ.alt_B && !lastQ.alt_C) {
       console.error("NO Answer given");
+      setInputError({
+        id: lastQ.id,
+        q: false,
+        alt: false,
+        answer: true,
+      });
       // console.log("Error ALt");
     } else {
       console.log("Last Else");
+      setInputError({
+        id: lastQ.id,
+        q: false,
+        alt: false,
+        answer: false,
+      });
 
-      if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
-        values.push({
-          id: uniqid(),
-          q: "",
-          alt_A: false,
-          alt_B: false,
-          alt_C: false,
-          altA_q: "",
-          altB_q: "",
-          altC_q: "",
-        });
-        setQArr(values);
-      }
+      // if (lastQ.alt_A || lastQ.alt_B || lastQ.alt_C) {
+      // }
+      values.push({
+        id: uniqid(),
+        q: "",
+        alt_A: false,
+        alt_B: false,
+        alt_C: false,
+        altA_q: "",
+        altB_q: "",
+        altC_q: "",
+      });
+      setQArr(values);
     }
   };
+
+  const handleShare = () => {
+    // Send the quizz to the next page
+    // 0- Remove the last empty obj
+    // 1-  Save current quiz to localstorate
+    // 2- Clean up and set all state to defualt
+    // 3- push to next page
+
+    // 1
+    localStorage.setItem("myQ", JSON.stringify(qArr));
+
+    //2
+
+    // 3
+    router.push("/share");
+  };
+  // console.log();
 
   const handleRemoveFields = (index: number) => {
     const values = [...qArr];
@@ -171,6 +224,8 @@ const Home: NextPage = () => {
     e.preventDefault();
   };
 
+  console.log(qArr);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -188,7 +243,15 @@ const Home: NextPage = () => {
                   <br />
                   <div key={`${q}~${index}`}>
                     <div>
-                      <label htmlFor="q_">Write Q here</label>
+                      <label
+                        style={{
+                          color:
+                            q.id === current && inputError.q ? "red" : "black",
+                        }}
+                        htmlFor="q_"
+                      >
+                        Write Q here
+                      </label>
                       <input
                         type="text"
                         // className="form-control"
@@ -200,7 +263,12 @@ const Home: NextPage = () => {
                     </div>
                     <h4>Select the correct answer</h4>
                     <div>
-                      <label htmlFor="altA">Add Answer</label>
+                      <label
+                        // style={{ color: inputError.alt ? "red" : "black" }}
+                        htmlFor="altA"
+                      >
+                        Add Answer
+                      </label>
                       <input
                         type="checkbox"
                         className={styles.inputCheck}
@@ -222,7 +290,12 @@ const Home: NextPage = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="altB">Add Answer</label>
+                      <label
+                        // style={{ color:  inputError.alt ? "red" : "black" }}
+                        htmlFor="altB"
+                      >
+                        Add Answer
+                      </label>
                       <input
                         type="checkbox"
                         // className="form-control"
@@ -232,6 +305,7 @@ const Home: NextPage = () => {
                         checked={q.alt_B}
                         onChange={(event) => handleInputChange(index, event)}
                       />
+
                       <input
                         type="text"
                         // className="form-control"
@@ -243,7 +317,12 @@ const Home: NextPage = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="altC">Add Answer</label>
+                      <label
+                        // style={{ color: inputError.alt ? "red" : "black" }}
+                        htmlFor="altC"
+                      >
+                        Add Answer
+                      </label>
                       <input
                         type="checkbox"
                         // className="form-control"
@@ -272,7 +351,8 @@ const Home: NextPage = () => {
           <br />
         </form>
         <button onClick={() => handleAddFields()}>Add More</button>
-        <button>Finish Quiz</button>
+
+        <button onClick={() => handleShare()}>Finish Quiz</button>
       </main>
     </div>
   );
