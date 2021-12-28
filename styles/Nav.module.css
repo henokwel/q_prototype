@@ -1,0 +1,24 @@
+.nav {
+  display: flex;
+  
+  justify-content: flex-end;
+  background-color: black;
+  /* height: 80px; */
+  color: white;
+}
+
+.nav ul {
+  display: flex;
+  margin: 0;
+  justify-content: flex-end;
+  align-items: center;
+  /* background-color: grey; */
+  height: 50px;
+
+  width: 50%;
+  list-style: none;
+}
+
+.nav ul li {
+  margin-right: 25px;
+}
