@@ -1,3 +1,5 @@
+import { ThemeProvider, styled, createTheme, Checkbox } from "@mui/material";
+import { orange } from "@mui/material/colors";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -6,6 +8,41 @@ import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
 const uniqid = require("uniqid");
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    status: {
+      danger: string;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    status?: {
+      danger?: string;
+    };
+  }
+}
+
+const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
+  color: theme.status.danger,
+  "&.Mui-checked": {
+    color: theme.status.danger,
+  },
+}));
+
+const theme = createTheme({
+  status: {
+    danger: orange[500],
+  },
+});
+
+function CustomStyles() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CustomCheckbox defaultChecked />
+    </ThemeProvider>
+  );
+}
 
 // Share Q
 // Admin/quizzName/random generate Id for the q / .domain
@@ -240,6 +277,7 @@ const Quiz: NextPage = () => {
             {qArr.map((q, index) => {
               return (
                 <>
+                  <ThemeProvider theme={theme}>
                   <br />
                   <div key={`${q}~${index}`}>
                     <div>
@@ -269,7 +307,15 @@ const Quiz: NextPage = () => {
                       >
                         Add Answer
                       </label>
-                      <input
+
+                      <CustomCheckbox 
+                      id="altA"
+                      name="altA"
+                      checked={q.alt_A}
+                      onChange={(event) => handleInputChange(index, event)}
+                      />
+
+                      {/* <input
                         type="checkbox"
                         className={styles.inputCheck}
                         id="altA"
@@ -278,7 +324,7 @@ const Quiz: NextPage = () => {
 
                         checked={q.alt_A}
                         onChange={(event) => handleInputChange(index, event)}
-                      />
+                      /> */}
                       <input
                         type="text"
                         // className="form-control"
@@ -342,6 +388,8 @@ const Quiz: NextPage = () => {
                       />
                     </div>
                   </div>
+                  </ThemeProvider>
+
                 </>
               );
             })}
